@@ -2,6 +2,8 @@ node_modules/
 
 yarn.lock
 
+ormconfig.json
+
 yarn-error.log
 
 
