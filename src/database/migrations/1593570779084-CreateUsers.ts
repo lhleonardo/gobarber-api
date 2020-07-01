@@ -1,21 +1,21 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateAppointment1593555625374
-  implements MigrationInterface {
+export default class CreateUsers1593570779084 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'appointments',
+        name: 'users',
         columns: [
           {
             name: 'id',
             type: 'varchar',
-            isPrimary: true,
             generationStrategy: 'uuid',
+            isPrimary: true,
             default: 'uuid_generate_v4()',
           },
-          { name: 'provider', type: 'varchar' },
-          { name: 'date', type: 'timestamp with time zone' },
+          { name: 'name', type: 'varchar' },
+          { name: 'email', type: 'varchar', isUnique: true },
+          { name: 'password', type: 'varchar' },
           { name: 'created_at', type: 'timestamp', default: 'now()' },
           { name: 'updated_at', type: 'timestamp', default: 'now()' },
         ],
@@ -23,7 +23,5 @@ export default class CreateAppointment1593555625374
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('appointments');
-  }
+  public async down(queryRunner: QueryRunner): Promise<void> { }
 }
