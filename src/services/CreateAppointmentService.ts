@@ -1,27 +1,25 @@
 import { startOfHour } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 import AppointmentRepository from '../repositories/AppointmentRepository';
 import Appointment from '../models/Appointment';
 
-interface CreateAppointmentInterface {
+interface Request {
   provider: string;
   date: Date;
 }
 
 export default class CreateAppointmentService {
-  private repository: AppointmentRepository;
-
-  constructor(repository: AppointmentRepository) {
-    this.repository = repository;
-  }
-
-  public execute({ provider, date }: CreateAppointmentInterface): Appointment {
+  public async execute({ provider, date }: Request): Promise<Appointment> {
+    const repository = getCustomRepository(AppointmentRepository);
     const parsedDate = startOfHour(date);
 
-    if (this.repository.findByDate(parsedDate)) {
+    if (await repository.findByDate(parsedDate)) {
       throw Error('Já existe um agendamento marcado para esse horário.');
     }
 
-    const appointment = this.repository.create({ provider, date: parsedDate });
+    const appointment = repository.create({ provider, date: parsedDate });
+
+    await repository.save(appointment);
 
     return appointment;
   }
