@@ -29,6 +29,8 @@ export default class AuthenticateUserService {
       throw new Error('Bad credentials.');
     }
 
+    delete validUser.password;
+
     const token = sign({}, config.jwt.secret, {
       subject: validUser.id,
       expiresIn: config.jwt.expiresIn,

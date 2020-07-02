@@ -8,7 +8,10 @@ const routes = Router();
 routes.get('/', async (request, response) => {
   try {
     const repository = getRepository(User);
-    const users = await repository.find();
+    // não mostre a senha dos usuários na consulta de todos cadastrados
+    const users = await repository.find({
+      select: ['id', 'name', 'email', 'createdAt', 'updatedAt'],
+    });
 
     return response.json(users);
   } catch (err) {
@@ -21,6 +24,9 @@ routes.post('/', async (request, response) => {
     const { name, email, password } = request.body;
     const service = new CreateUserService();
     const user = await service.execute({ name, email, password });
+
+    // não mostrar a senha no corpo da requisição
+    delete user.password;
 
     return response.json(user);
   } catch (err) {
