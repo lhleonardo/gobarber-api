@@ -2,6 +2,7 @@ import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import AppointmentRepository from '../../repositories/AppointmentRepository';
 import Appointment from '../../models/Appointment';
+import AppError from '../../errors/AppError';
 
 interface Request {
   provider_id: string;
@@ -14,7 +15,7 @@ export default class CreateAppointmentService {
     const parsedDate = startOfHour(date);
 
     if (await repository.findByDate(parsedDate)) {
-      throw Error('Já existe um agendamento marcado para esse horário.');
+      throw new AppError('This time has already been scheduled');
     }
 
     const appointment = repository.create({ provider_id, date: parsedDate });

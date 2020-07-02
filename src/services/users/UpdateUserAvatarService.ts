@@ -4,6 +4,7 @@ import fs from 'fs';
 import User from '../../models/User';
 
 import config from '../../config/upload';
+import AppError from '../../errors/AppError';
 
 interface Request {
   userId: string;
@@ -17,7 +18,7 @@ export default class UpdateUserAvatarService {
     const user = await userRepository.findOne(userId);
 
     if (!user) {
-      throw new Error('Only authenticated users can change avatar');
+      throw new AppError('Only authenticated users can change avatar', 403);
     }
 
     // precisa apagar avatar antigo

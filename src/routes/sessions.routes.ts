@@ -4,17 +4,13 @@ import AuthenticateUserService from '../services/sessions/AuthenticateUserServic
 const routes = Router();
 
 routes.post('/', async (request, response) => {
-  try {
-    const { email, password } = request.body;
+  const { email, password } = request.body;
 
-    const service = new AuthenticateUserService();
+  const service = new AuthenticateUserService();
 
-    const { user, token } = await service.execute({ email, password });
+  const { user, token } = await service.execute({ email, password });
 
-    return response.json({ user, token });
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json({ user, token });
 });
 
 export default routes;

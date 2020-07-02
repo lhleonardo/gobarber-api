@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 import config from '../../config/auth';
 import User from '../../models/User';
+import AppError from '../../errors/AppError';
 
 interface Request {
   email: string;
@@ -20,13 +21,13 @@ export default class AuthenticateUserService {
     const validUser = await userRepository.findOne({ where: { email } });
 
     if (!validUser) {
-      throw new Error('Bad credentials.');
+      throw new AppError('Bad credentials.', 401);
     }
 
     const validPassword = await compare(password, validUser.password);
 
     if (!validPassword) {
-      throw new Error('Bad credentials.');
+      throw new AppError('Bad credentials.', 401);
     }
 
     delete validUser.password;
