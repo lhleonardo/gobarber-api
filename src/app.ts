@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
+import cors from 'cors';
 import routes from './routes';
 
 import './database';
@@ -14,6 +15,8 @@ app.use(express.json());
 // rota estática para acessar arquivos que foram enviados
 app.use('/files', express.static(uploadConfig.directory));
 app.use(routes);
+
+app.use(cors());
 
 app.use(
   (error: Error, request: Request, response: Response, _: NextFunction) => {
