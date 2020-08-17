@@ -11,12 +11,11 @@ import AppError from './errors/AppError';
 const app = express();
 
 // corpo da requisição sempre convertido para json
+app.use(cors());
 app.use(express.json());
 // rota estática para acessar arquivos que foram enviados
 app.use('/files', express.static(uploadConfig.directory));
 app.use(routes);
-
-app.use(cors());
 
 app.use(
   (error: Error, request: Request, response: Response, _: NextFunction) => {
