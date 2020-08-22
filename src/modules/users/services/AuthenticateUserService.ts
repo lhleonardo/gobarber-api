@@ -1,9 +1,9 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
-import config from '../../config/auth';
-import User from '../../models/User';
-import AppError from '../../errors/AppError';
+import config from '@config/auth';
+import AppError from '@shared/errors/AppError';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 interface Request {
   email: string;
