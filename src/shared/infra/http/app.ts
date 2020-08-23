@@ -1,10 +1,9 @@
+import '@shared/infra/typeorm';
+
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import routes from './routes';
-
-console.log('Teste');
-import '@shared/infra/typeorm';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
