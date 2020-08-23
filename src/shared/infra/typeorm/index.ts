@@ -1,3 +1,9 @@
 import { createConnection } from 'typeorm';
 
-createConnection();
+async function connect() {
+  await createConnection();
+}
+
+console.log('Connecting...');
+
+connect();

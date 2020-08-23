@@ -1,24 +1,25 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
 import config from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
+import IUserRepository from '../repositories/IUserRepository';
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
-export default class AuthenticateUserService {
-  public async execute({ email, password }: Request): Promise<Response> {
-    const userRepository = getRepository(User);
 
-    const validUser = await userRepository.findOne({ where: { email } });
+export default class AuthenticateUserService {
+  constructor(private userRepository: IUserRepository) {}
+
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const validUser = await this.userRepository.findByEmail(email);
 
     if (!validUser) {
       throw new AppError('Bad credentials.', 401);

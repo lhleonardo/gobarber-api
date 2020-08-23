@@ -9,8 +9,12 @@ import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarSer
 import User from '@modules/users/infra/typeorm/entities/User';
 import CreateUserService from '@modules/users/services/CreateUserService';
 
+import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
+
 const routes = Router();
 const upload = multer(config);
+
+const userRepository = new UserRepository();
 
 routes.get('/', async (request, response) => {
   const repository = getRepository(User);
@@ -24,7 +28,7 @@ routes.get('/', async (request, response) => {
 
 routes.post('/', async (request, response) => {
   const { name, email, password } = request.body;
-  const service = new CreateUserService();
+  const service = new CreateUserService(userRepository);
   const user = await service.execute({ name, email, password });
 
   // não mostrar a senha no corpo da requisição
@@ -40,7 +44,7 @@ routes.patch(
   async (request, response) => {
     const { filename } = request.file;
 
-    const updateAvatarService = new UpdateUserAvatarService();
+    const updateAvatarService = new UpdateUserAvatarService(userRepository);
     const updatedUser = await updateAvatarService.execute({
       userId: request.user.id,
       avatarFilename: filename,
