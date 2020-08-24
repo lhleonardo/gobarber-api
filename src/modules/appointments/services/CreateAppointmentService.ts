@@ -3,14 +3,19 @@ import AppointmentRepository from '@modules/appointments/repositories/IAppointme
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import AppError from '@shared/errors/AppError';
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
+import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   provider_id: string;
   date: Date;
 }
 
+@injectable()
 export default class CreateAppointmentService {
-  constructor(private appointmentRepository: IAppointmentRepository) {}
+  constructor(
+    @inject('AppointmentRepository')
+    private appointmentRepository: IAppointmentRepository,
+  ) {}
 
   public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
     const parsedDate = startOfHour(date);
