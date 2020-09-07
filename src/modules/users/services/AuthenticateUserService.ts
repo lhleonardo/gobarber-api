@@ -1,10 +1,10 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import config from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRepository';
 import { injectable, inject } from 'tsyringe';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -20,6 +20,7 @@ interface IResponse {
 export default class AuthenticateUserService {
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
+    @inject('HashProvider') private hash: IHashProvider,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -29,7 +30,7 @@ export default class AuthenticateUserService {
       throw new AppError('Bad credentials.', 401);
     }
 
-    const validPassword = await compare(password, validUser.password);
+    const validPassword = await this.hash.compare(password, validUser.password);
 
     if (!validPassword) {
       throw new AppError('Bad credentials.', 401);
