@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 import AppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import AppError from '@shared/errors/AppError';
@@ -20,7 +20,10 @@ export default class CreateAppointmentService {
   public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
     const parsedDate = startOfHour(date);
 
-    if (await this.appointmentRepository.findByDate(parsedDate)) {
+    const findAppointmentInSameDate = await this.appointmentRepository.findByDate(
+      parsedDate,
+    );
+    if (findAppointmentInSameDate) {
       throw new AppError('This time has already been scheduled');
     }
 
