@@ -3,40 +3,37 @@ import FakeUsersRepository from '../repositories/fake/FakeUsersRepository';
 import SendForgotPasswordEmailService from './SendForgotPasswordEmailService';
 import AppError from '@shared/errors/AppError';
 
+let userRepository: FakeUsersRepository;
+let mailProvider: FakeMailProvider;
+let sendForgotPasswordEmail: SendForgotPasswordEmailService;
+
 describe('Forgot Password', () => {
-  it('Deve permitir recuperar a senha a partir do e-mail', async () => {
-    const mailProvider = new FakeMailProvider();
-    const userRepository = new FakeUsersRepository();
+  beforeEach(() => {
+    userRepository = new FakeUsersRepository();
+    mailProvider = new FakeMailProvider();
 
-    const sendMail = jest.spyOn(mailProvider, 'sendMail');
-
-    const service = new SendForgotPasswordEmailService(
+    sendForgotPasswordEmail = new SendForgotPasswordEmailService(
       mailProvider,
       userRepository,
     );
+  });
 
+  it('Deve permitir recuperar a senha a partir do e-mail', async () => {
+    const sendMail = jest.spyOn(mailProvider, 'sendMail');
     await userRepository.create({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',
       password: '123456',
     });
 
-    await service.execute({ email: 'lhleonardo@hotmail.com' });
+    await sendForgotPasswordEmail.execute({ email: 'lhleonardo@hotmail.com' });
 
     expect(sendMail).toHaveBeenCalled();
   });
 
   it('Não deve permitir recuperar senha de usuário não cadastrado', async () => {
-    const userRepository = new FakeUsersRepository();
-    const mailProvider = new FakeMailProvider();
-
-    const sendMail = new SendForgotPasswordEmailService(
-      mailProvider,
-      userRepository,
-    );
-
     expect(
-      sendMail.execute({ email: 'lhleonardo@hotmail.com' }),
+      sendForgotPasswordEmail.execute({ email: 'lhleonardo@hotmail.com' }),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

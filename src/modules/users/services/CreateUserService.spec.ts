@@ -4,12 +4,17 @@ import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import AppError from '@shared/errors/AppError';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
-describe('Create User', () => {
-  it('Deve criar um novo usuário', async () => {
-    const fakeRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const service = new CreateUserService(fakeRepository, fakeHashProvider);
+let fakeRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let service: CreateUserService;
 
+describe('Create User', () => {
+  beforeEach(() => {
+    fakeRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    service = new CreateUserService(fakeRepository, fakeHashProvider);
+  });
+  it('Deve criar um novo usuário', async () => {
     const createdUser = await service.execute({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',
@@ -20,10 +25,6 @@ describe('Create User', () => {
   });
 
   it('Não deve permitir e-mail duplicado', async () => {
-    const fakeRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const service = new CreateUserService(fakeRepository, fakeHashProvider);
-
     const user: ICreateUserDTO = {
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',

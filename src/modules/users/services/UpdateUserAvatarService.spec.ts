@@ -3,19 +3,24 @@ import FakeUsersRepository from '../repositories/fake/FakeUsersRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 import AppError from '@shared/errors/AppError';
 
-describe('Update Avatar', () => {
-  it('Deve atualizar a foto de perfil', async () => {
-    const fakeStorage = new FakeStorageProvider();
-    const fakeRepository = new FakeUsersRepository();
-    const service = new UpdateUserAvatarService(fakeRepository, fakeStorage);
+let fakeStorage: FakeStorageProvider;
+let fakeRepository: FakeUsersRepository;
+let updateUserAvatar: UpdateUserAvatarService;
 
+describe('Update Avatar', () => {
+  beforeEach(() => {
+    fakeStorage = new FakeStorageProvider();
+    fakeRepository = new FakeUsersRepository();
+    updateUserAvatar = new UpdateUserAvatarService(fakeRepository, fakeStorage);
+  });
+  it('Deve atualizar a foto de perfil', async () => {
     const user = await fakeRepository.create({
       email: 'lhleonardo@hotmail.com',
       name: 'Leonardo Braz',
       password: '123456',
     });
 
-    const response = await service.execute({
+    const response = await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar.png',
     });
@@ -24,12 +29,8 @@ describe('Update Avatar', () => {
   });
 
   it('Não deve atualizar avatar de usuário inválido', async () => {
-    const fakeStorage = new FakeStorageProvider();
-    const fakeRepository = new FakeUsersRepository();
-    const service = new UpdateUserAvatarService(fakeRepository, fakeStorage);
-
     expect(
-      service.execute({
+      updateUserAvatar.execute({
         userId: 'invalid_user_id',
         avatarFilename: 'avatar.png',
       }),
@@ -37,24 +38,20 @@ describe('Update Avatar', () => {
   });
 
   it('Deve trocar a foto de perfil do usuário e apagar a antiga', async () => {
-    const userRepository = new FakeUsersRepository();
-    const storage = new FakeStorageProvider();
-    const updateService = new UpdateUserAvatarService(userRepository, storage);
+    const mockedMethod = jest.spyOn(fakeStorage, 'deleteFile');
 
-    const mockedMethod = jest.spyOn(storage, 'deleteFile');
-
-    const user = await userRepository.create({
+    const user = await fakeRepository.create({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',
       password: '123456',
     });
 
-    await updateService.execute({
+    await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar.png',
     });
 
-    await updateService.execute({
+    await updateUserAvatar.execute({
       userId: user.id,
       avatarFilename: 'avatar_2.png',
     });
