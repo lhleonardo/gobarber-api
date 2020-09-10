@@ -2,25 +2,29 @@ import FakeMailProvider from '@shared/container/providers/MailProvider/fakes/Fak
 import FakeUsersRepository from '../repositories/fake/FakeUsersRepository';
 import SendForgotPasswordEmailService from './SendForgotPasswordEmailService';
 import AppError from '@shared/errors/AppError';
+import FakeUserTokenRepository from '../repositories/fake/FakeUserTokenRepository';
 
-let userRepository: FakeUsersRepository;
-let mailProvider: FakeMailProvider;
+let fakeUserRepository: FakeUsersRepository;
+let fakeUserTokenRepository: FakeUserTokenRepository;
+let fakeMailProvider: FakeMailProvider;
 let sendForgotPasswordEmail: SendForgotPasswordEmailService;
 
 describe('Forgot Password', () => {
   beforeEach(() => {
-    userRepository = new FakeUsersRepository();
-    mailProvider = new FakeMailProvider();
+    fakeUserRepository = new FakeUsersRepository();
+    fakeMailProvider = new FakeMailProvider();
+    fakeUserTokenRepository = new FakeUserTokenRepository();
 
     sendForgotPasswordEmail = new SendForgotPasswordEmailService(
-      mailProvider,
-      userRepository,
+      fakeMailProvider,
+      fakeUserRepository,
+      fakeUserTokenRepository,
     );
   });
 
   it('Deve permitir recuperar a senha a partir do e-mail', async () => {
-    const sendMail = jest.spyOn(mailProvider, 'sendMail');
-    await userRepository.create({
+    const sendMail = jest.spyOn(fakeMailProvider, 'sendMail');
+    await fakeUserRepository.create({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',
       password: '123456',
@@ -35,5 +39,19 @@ describe('Forgot Password', () => {
     expect(
       sendForgotPasswordEmail.execute({ email: 'lhleonardo@hotmail.com' }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Deve criar um token único para recuperação de senha', async () => {
+    const generateToken = jest.spyOn(fakeUserTokenRepository, 'generate');
+
+    const user = await fakeUserRepository.create({
+      email: 'lhleonardo@hotmail.com',
+      name: 'Leonardo Henrique de Braz',
+      password: '123456',
+    });
+
+    await sendForgotPasswordEmail.execute({ email: 'lhleonardo@hotmail.com' });
+
+    expect(generateToken).toHaveBeenCalledWith(user.id);
   });
 });
