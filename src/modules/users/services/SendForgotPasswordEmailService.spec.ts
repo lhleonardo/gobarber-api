@@ -36,7 +36,7 @@ describe('Forgot Password', () => {
   });
 
   it('Não deve permitir recuperar senha de usuário não cadastrado', async () => {
-    expect(
+    await expect(
       sendForgotPasswordEmail.execute({ email: 'lhleonardo@hotmail.com' }),
     ).rejects.toBeInstanceOf(AppError);
   });

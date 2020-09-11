@@ -32,8 +32,8 @@ describe('AuthenticationUser', () => {
     expect(user).toHaveProperty('token');
   });
 
-  it('Não deve se autenticar com usuário não cadastrado', () => {
-    expect(
+  it('Não deve se autenticar com usuário não cadastrado', async () => {
+    await expect(
       authUser.execute({ email: 'lhleonardo@hotmail.com', password: '123456' }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -46,7 +46,7 @@ describe('AuthenticationUser', () => {
       password: '123456',
     });
 
-    expect(
+    await expect(
       authUser.execute({
         email: 'lhleonardo@hotmail.com',
         password: '12345',

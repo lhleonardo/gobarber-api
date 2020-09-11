@@ -29,7 +29,7 @@ describe('Update Avatar', () => {
   });
 
   it('Não deve atualizar avatar de usuário inválido', async () => {
-    expect(
+    await expect(
       updateUserAvatar.execute({
         userId: 'invalid_user_id',
         avatarFilename: 'avatar.png',
