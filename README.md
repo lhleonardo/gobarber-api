@@ -16,7 +16,16 @@ As características técnicas são descritas abaixo:
 
 # Mapeamento de funcionalidades
 
-## Recuperação de senha
+## Rastreamento
+
+- [x] Recuperação de senha
+- [ ] Atualização do perfil
+- [ ] Painel do prestador
+- [ ] Agendamento de serviços
+
+## Detalhes
+
+### Recuperação de senha
 
 **RF**
 
@@ -35,7 +44,7 @@ As características técnicas são descritas abaixo:
 - O link enviado por email para resetar senha, deve expirar em 2h;
 - O usuário precisa confirmar a nova senha ao resetar sua senha;
 
-## Atualização do perfil
+### Atualização do perfil
 
 **RF**
 
@@ -47,7 +56,7 @@ As características técnicas são descritas abaixo:
 - Para atualizar sua senha, o usuário deve informar a senha antiga;
 - Para atualizar sua senha, o usuário precisa confirmar a nova senha;
 
-## Painel do prestador
+### Painel do prestador
 
 **RF**
 
@@ -65,7 +74,7 @@ As características técnicas são descritas abaixo:
 
 - A notificação deve ter um status de lida ou não-lida para que o prestador possa controlar;
 
-## Agendamento de serviços
+### Agendamento de serviços
 
 **RF**
 
