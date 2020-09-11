@@ -1,6 +1,6 @@
 import IUserRepository from '../repositories/IUserRepository';
 import IUserTokenRepository from '../repositories/IUserTokenRepository';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import isAfter from 'date-fns/isAfter';
@@ -11,6 +11,7 @@ interface IRequest {
   password: string;
 }
 
+@injectable()
 export default class ResetPasswordService {
   constructor(
     @inject('UserRepository')

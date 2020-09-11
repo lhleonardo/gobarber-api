@@ -1,4 +1,4 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import IUserRepository from '../repositories/IUserRepository';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import AppError from '@shared/errors/AppError';
@@ -8,6 +8,7 @@ interface IRequest {
   email: string;
 }
 
+@injectable()
 export default class SendForgotPasswordEmailService {
   constructor(
     @inject('MailProvider')
