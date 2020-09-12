@@ -19,7 +19,7 @@ As características técnicas são descritas abaixo:
 ## Rastreamento
 
 - [x] Recuperação de senha
-- [ ] Atualização do perfil
+- [x] Atualização do perfil
 - [ ] Painel do prestador
 - [ ] Agendamento de serviços
 

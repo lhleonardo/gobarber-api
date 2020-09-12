@@ -20,8 +20,8 @@ export default class Appointment {
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
-  @Column()
-  provider_id: string;
+  @Column({ name: 'provider_id' })
+  providerId: string;
 
   @Column('timestamp with time zone')
   date: Date;
