@@ -11,11 +11,11 @@ describe('CreateAppointment', () => {
     const service = new CreateAppointmentService(repository);
     const appointment = await service.execute({
       date: new Date(),
-      provider_id: '123123',
+      providerId: '123123',
     });
 
     expect(appointment).toHaveProperty('id');
-    expect(appointment.provider_id).toBe('123123');
+    expect(appointment.providerId).toBe('123123');
   });
 
   it('Não deve criar dois agendamentos no mesmo dia', async () => {
@@ -25,13 +25,13 @@ describe('CreateAppointment', () => {
     const service = new CreateAppointmentService(repository);
     await service.execute({
       date: appointmentDate,
-      provider_id: '123123',
+      providerId: '123123',
     });
 
     expect(
       service.execute({
         date: appointmentDate,
-        provider_id: '123123',
+        providerId: '123123',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

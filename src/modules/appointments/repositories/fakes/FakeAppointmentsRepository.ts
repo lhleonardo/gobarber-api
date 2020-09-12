@@ -3,23 +3,39 @@ import IAppointmentRepository from '@modules/appointments/repositories/IAppointm
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 
 import { v4 as uuid } from 'uuid';
-import { isEqual } from 'date-fns';
+import { getMonth, getYear, isEqual } from 'date-fns';
+import IFindAppointmentsInMonthDTO from '@modules/appointments/dtos/IFIndAppointmentsInMonthDTO';
 
 export default class FakeAppointmentRepository
   implements IAppointmentRepository {
   private appointments: Appointment[] = [];
 
   public async create({
-    provider_id,
+    providerId,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
     // mesmo que fazer appointment.id = uuid(), ...
-    Object.assign(appointment, { id: uuid(), provider_id, date });
+    Object.assign(appointment, { id: uuid(), providerId, date });
 
     this.appointments.push(appointment);
     return appointment;
+  }
+
+  public async findInMonth({
+    providerId,
+    year,
+    month,
+  }: IFindAppointmentsInMonthDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(
+      appointment =>
+        appointment.providerId === providerId &&
+        getMonth(appointment.date) + 1 === month &&
+        getYear(appointment.date) === year,
+    );
+
+    return appointments;
   }
 
   public async findByDate(date: Date): Promise<Appointment | undefined> {

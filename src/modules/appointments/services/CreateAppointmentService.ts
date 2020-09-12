@@ -6,7 +6,7 @@ import IAppointmentRepository from '@modules/appointments/repositories/IAppointm
 import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
-  provider_id: string;
+  providerId: string;
   date: Date;
 }
 
@@ -17,7 +17,7 @@ export default class CreateAppointmentService {
     private appointmentRepository: IAppointmentRepository,
   ) {}
 
-  public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
+  public async execute({ providerId, date }: IRequest): Promise<Appointment> {
     const parsedDate = startOfHour(date);
 
     const findAppointmentInSameDate = await this.appointmentRepository.findByDate(
@@ -28,7 +28,7 @@ export default class CreateAppointmentService {
     }
 
     const appointment = await this.appointmentRepository.create({
-      provider_id,
+      providerId,
       date: parsedDate,
     });
 
