@@ -1,14 +1,11 @@
-import FakeUsersRepository from '@modules/users/repositories/fake/FakeUsersRepository';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 
-let usersRepository: FakeUsersRepository;
 let appointmentsRepository: FakeAppointmentRepository;
 let listProviderMonthAvailability: ListProviderMonthAvailabilityService;
 
 describe('ListProviderMonthAvailability', () => {
   beforeEach(() => {
-    usersRepository = new FakeUsersRepository();
     appointmentsRepository = new FakeAppointmentRepository();
     listProviderMonthAvailability = new ListProviderMonthAvailabilityService(
       appointmentsRepository,
@@ -19,6 +16,7 @@ describe('ListProviderMonthAvailability', () => {
     // não deve sair na relação de dias
     await appointmentsRepository.create({
       providerId: 'valid-provider-user',
+      userId: 'valid-user',
       date: new Date(2020, 4, 12, 8, 0, 0),
     });
 
@@ -26,6 +24,7 @@ describe('ListProviderMonthAvailability', () => {
     for (let i = 8; i <= 17; i++) {
       await appointmentsRepository.create({
         providerId: 'valid-provider-user',
+        userId: 'valid-user',
         date: new Date(2020, 4, 13, i, 0, 0),
       });
     }

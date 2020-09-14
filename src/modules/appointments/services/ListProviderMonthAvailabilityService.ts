@@ -30,7 +30,9 @@ export default class ListProviderMonthAvailabilityService {
       month,
     });
 
-    const numberOfDays = getDaysInMonth(month);
+    const numberOfDays = getDaysInMonth(new Date(year, month - 1));
+
+    console.log(`Mês ${month} com ${numberOfDays} dias`);
 
     const days = Array.from({ length: numberOfDays }, (_, index) => {
       const day = index + 1;

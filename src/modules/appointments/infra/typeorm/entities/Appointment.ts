@@ -23,6 +23,14 @@ export default class Appointment {
   @Column({ name: 'provider_id' })
   providerId: string;
 
+  // muitos agendamentos pertencem à um usuário
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @Column({ name: 'user_id' })
+  userId: string;
+
   @Column('timestamp with time zone')
   date: Date;
 

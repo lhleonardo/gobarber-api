@@ -17,6 +17,7 @@ class ShowUserService {
       throw new AppError('Usuário inexistente');
     }
 
+    delete user.password;
     return user;
   }
 }
