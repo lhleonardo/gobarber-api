@@ -1,16 +1,22 @@
 // PRECISA estar antes do serviço para não tentar injeção
-import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
+import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
 import CreateAppointmentService from './CreateAppointmentService';
 import AppError from '@shared/errors/AppError';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 
 let service: CreateAppointmentService;
-let repository: FakeAppointmentRepository;
+let notificationsRepository: FakeNotificationsRepository;
+let appointmentsRepository: FakeAppointmentsRepository;
 
 describe('CreateAppointment', () => {
   beforeEach(() => {
-    repository = new FakeAppointmentRepository();
-    service = new CreateAppointmentService(repository);
+    appointmentsRepository = new FakeAppointmentsRepository();
+    notificationsRepository = new FakeNotificationsRepository();
+    service = new CreateAppointmentService(
+      appointmentsRepository,
+      notificationsRepository,
+    );
   });
   it('Deve criar um novo agendamento', async () => {
     jest

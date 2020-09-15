@@ -12,6 +12,10 @@ describe('ListProviderDayAvailability', () => {
     );
   });
   it('Deve mostrar os horários disponíveis de um prestador em um determinado dia', async () => {
+    jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => new Date(2020, 3, 15, 7).getTime());
+
     await appointmentRepository.create({
       providerId: 'valid-provider-id',
       userId: 'valid-user-id',
