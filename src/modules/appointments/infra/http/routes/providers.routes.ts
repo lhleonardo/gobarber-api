@@ -2,6 +2,8 @@ import ProviderDayAvailabilityController from '@modules/appointments/controllers
 import ProviderMonthAvailabilityController from '@modules/appointments/controllers/ProviderMonthAvailabilityController';
 import ProvidersController from '@modules/appointments/controllers/ProvidersController';
 import ensureAuthentication from '@modules/users/infra/http/middlewares/ensureAuthentication';
+import { celebrate, Segments, Joi } from 'celebrate';
+
 import { Router } from 'express';
 
 const providersRouter = Router();
@@ -15,10 +17,29 @@ providersRouter.use(ensureAuthentication);
 providersRouter.get('/', providersController.index);
 providersRouter.get(
   '/:providerId/month-availability',
+  celebrate({
+    [Segments.PARAMS]: {
+      providerId: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      year: Joi.number().required(),
+      month: Joi.number().required().min(1).max(12),
+    },
+  }),
+
   monthAvailaibityController.index,
 );
 providersRouter.get(
   '/:providerId/day-availability',
+  celebrate({
+    [Segments.PARAMS]: {
+      providerId: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      year: Joi.number().required(),
+      month: Joi.number().required().min(1).max(12),
+    },
+  }),
   dayAvailaibityController.index,
 );
 
