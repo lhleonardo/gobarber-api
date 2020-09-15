@@ -2,6 +2,7 @@ import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRepository';
+import { classToClass } from 'class-transformer';
 
 @injectable()
 class ShowUserService {
@@ -17,8 +18,7 @@ class ShowUserService {
       throw new AppError('Usuário inexistente');
     }
 
-    delete user.password;
-    return user;
+    return classToClass(user);
   }
 }
 

@@ -1,4 +1,5 @@
 import '@shared/infra/typeorm';
+import 'dotenv/config';
 
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
@@ -18,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // rota estática para acessar arquivos que foram enviados
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.uploadFolder));
 app.use(routes);
 
 app.use(errors());

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+
 import CreateUserService from '../services/CreateUserService';
+import { classToClass } from 'class-transformer';
 
 export default class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -8,9 +10,6 @@ export default class UsersController {
     const service = container.resolve(CreateUserService);
     const user = await service.execute({ name, email, password });
 
-    // não mostrar a senha no corpo da requisição
-    delete user.password;
-
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }

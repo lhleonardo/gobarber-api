@@ -5,6 +5,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRepository';
 import { injectable, inject } from 'tsyringe';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   email: string;
@@ -36,14 +37,12 @@ export default class AuthenticateUserService {
       throw new AppError('Bad credentials.', 401);
     }
 
-    delete validUser.password;
-
     const token = sign({}, config.jwt.secret, {
       subject: validUser.id,
       expiresIn: config.jwt.expiresIn,
     });
     return {
-      user: validUser,
+      user: classToClass(validUser),
       token,
     };
   }
