@@ -1,6 +1,6 @@
-import ProviderDayAvailabilityController from '@modules/appointments/controllers/ProviderDayAvailabilityController';
-import ProviderMonthAvailabilityController from '@modules/appointments/controllers/ProviderMonthAvailabilityController';
-import ProvidersController from '@modules/appointments/controllers/ProvidersController';
+import ProviderDayAvailabilityController from '@modules/appointments/infra/http/controllers/ProviderDayAvailabilityController';
+import ProviderMonthAvailabilityController from '@modules/appointments/infra/http/controllers/ProviderMonthAvailabilityController';
+import ProvidersController from '@modules/appointments/infra/http/controllers/ProvidersController';
 import ensureAuthentication from '@modules/users/infra/http/middlewares/ensureAuthentication';
 import { celebrate, Segments, Joi } from 'celebrate';
 

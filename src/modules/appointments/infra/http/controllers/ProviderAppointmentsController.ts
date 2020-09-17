@@ -1,6 +1,6 @@
+import ListProviderAppointmentsService from '@modules/appointments/services/ListProviderAppointmentsService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import ListProviderAppointmentsService from '../services/ListProviderAppointmentsService';
 
 export default class ProviderAppointmentsController {
   async index(request: Request, response: Response): Promise<Response> {

@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 import { Response, Request } from 'express';
-import ResetPasswordService from '../services/ResetPasswordService';
+import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 
 export default class ResetPasswordController {
   public async store(request: Request, response: Response): Promise<Response> {

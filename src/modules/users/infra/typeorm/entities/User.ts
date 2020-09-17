@@ -8,6 +8,8 @@ import {
 
 import { Exclude, Expose } from 'class-transformer';
 
+import storageConfig from '@config/upload';
+
 @Entity('users')
 export default class User {
   @PrimaryGeneratedColumn()
@@ -34,10 +36,10 @@ export default class User {
 
   @Expose({ name: 'avatarURL' })
   getAvatarUrl(): string | null {
-    if (this.avatar) {
-      return `${process.env.APP_API_URL}/files/${this.avatar}`;
+    if (!this.avatar) {
+      return null;
     }
 
-    return null;
+    return storageConfig.config.generateURL(this.avatar);
   }
 }
