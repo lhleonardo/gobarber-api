@@ -38,6 +38,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "aws-sdk": "^2.754.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^13.0.2",
     "class-transformer": "^0.3.1",
