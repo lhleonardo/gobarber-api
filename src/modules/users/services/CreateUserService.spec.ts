@@ -3,16 +3,23 @@ import CreateUserService from './CreateUserService';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 import AppError from '@shared/errors/AppError';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let service: CreateUserService;
 
 describe('Create User', () => {
   beforeEach(() => {
+    fakeCacheProvider = new FakeCacheProvider();
     fakeRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    service = new CreateUserService(fakeRepository, fakeHashProvider);
+    service = new CreateUserService(
+      fakeRepository,
+      fakeHashProvider,
+      fakeCacheProvider,
+    );
   });
   it('Deve criar um novo usuário', async () => {
     const createdUser = await service.execute({

@@ -3,21 +3,28 @@ import CreateUserService from './CreateUserService';
 import AuthenticateUserService from './AuthenticateUserService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import AppError from '@shared/errors/AppError';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let authUser: AuthenticateUserService;
+let createUser: CreateUserService;
 
 describe('AuthenticationUser', () => {
   beforeEach(() => {
+    fakeCacheProvider = new FakeCacheProvider();
     fakeRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
     authUser = new AuthenticateUserService(fakeRepository, fakeHashProvider);
+    createUser = new CreateUserService(
+      fakeRepository,
+      fakeHashProvider,
+      fakeCacheProvider,
+    );
   });
 
   it('Deve autenticar um usuário', async () => {
-    const createUser = new CreateUserService(fakeRepository, fakeHashProvider);
-
     await createUser.execute({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',
@@ -38,8 +45,6 @@ describe('AuthenticationUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   it('Não deve se autenticar com credenciais inválidas', async () => {
-    const createUser = new CreateUserService(fakeRepository, fakeHashProvider);
-
     await createUser.execute({
       name: 'Leonardo Henrique de Braz',
       email: 'lhleonardo@hotmail.com',

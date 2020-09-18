@@ -36,7 +36,6 @@ export default class AuthenticateUserService {
     if (!validPassword) {
       throw new AppError('Bad credentials.', 401);
     }
-
     const token = sign({}, config.jwt.secret, {
       subject: validUser.id,
       expiresIn: config.jwt.expiresIn,

@@ -1,14 +1,18 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderAppointmentsService from './ListProviderAppointmentsService';
 
 let appointmentsRepository: FakeAppointmentRepository;
 let listProviderAppointments: ListProviderAppointmentsService;
+let cacheProvider: FakeCacheProvider;
 
 describe('ListProviderAppointments', () => {
   beforeEach(() => {
     appointmentsRepository = new FakeAppointmentRepository();
+    cacheProvider = new FakeCacheProvider();
     listProviderAppointments = new ListProviderAppointmentsService(
       appointmentsRepository,
+      cacheProvider,
     );
   });
   it('Deve mostrar os agendamentos de um determinado prestador', async () => {

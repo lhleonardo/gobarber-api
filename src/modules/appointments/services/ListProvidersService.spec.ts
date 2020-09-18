@@ -1,13 +1,16 @@
 import FakeUsersRepository from '@modules/users/repositories/fake/FakeUsersRepository';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import ListProviderServices from './ListProvidersService';
 
 let userRepository: FakeUsersRepository;
 let listProviders: ListProviderServices;
+let cacheProvider: FakeCacheProvider;
 
 describe('ListProviders', () => {
   beforeEach(() => {
     userRepository = new FakeUsersRepository();
-    listProviders = new ListProviderServices(userRepository);
+    cacheProvider = new FakeCacheProvider();
+    listProviders = new ListProviderServices(userRepository, cacheProvider);
   });
   it('Deve listar todos os prestadores de serviço', async () => {
     const loggedUser = await userRepository.create({
