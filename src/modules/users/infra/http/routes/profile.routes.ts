@@ -30,7 +30,8 @@ profileRoutes.put(
         password: Joi.string(),
         confirmPassword: Joi.string(),
       })
-      .with('oldPassword', ['password', 'confirmPassword']),
+      .with('oldPassword', ['password', 'confirmPassword'])
+      .required(),
   }),
   profileController.update,
 );

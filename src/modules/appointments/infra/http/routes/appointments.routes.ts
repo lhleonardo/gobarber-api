@@ -16,21 +16,22 @@ router.use(ensureAuthentication);
 router.post(
   '/',
   celebrate({
-    [Segments.BODY]: {
+    [Segments.BODY]: Joi.object({
       providerId: Joi.string().uuid().required(),
       date: Joi.date().required(),
-    },
+    }).required(),
   }),
   appointmentsController.create,
 );
+
 router.get(
   '/me',
   celebrate({
-    [Segments.BODY]: {
-      year: Joi.number().integer().required,
-      month: Joi.number().integer().required().min(1).max(12),
-      day: Joi.number().integer().required().min(1).max(31),
-    },
+    [Segments.BODY]: Joi.object({
+      year: Joi.number().integer().required(),
+      month: Joi.number().integer().min(1).max(12),
+      day: Joi.number().integer().min(1).max(31),
+    }).required(),
   }),
   providerAppointmentsController.index,
 );
