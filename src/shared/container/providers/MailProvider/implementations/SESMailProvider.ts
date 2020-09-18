@@ -39,8 +39,6 @@ export default class SESMailProvider implements IMailProvider {
       html: await this.mailTemplateProvider.generate(template),
     };
 
-    console.log(content);
-
     await this.client.sendMail(content);
   }
 }

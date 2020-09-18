@@ -24,11 +24,7 @@ export default class S3StorageProvider implements IStorageProvider {
    * @param file nome do arquivo no servidor da aplicação, convertido pelo multer
    */
   public async uploadFile(file: string): Promise<string> {
-    console.log(upload.tmpFolder);
-    console.log(file);
     const originalPath = path.resolve(uploadManagement.tmpFolder, file);
-
-    console.log(originalPath);
 
     // extrai o tipo de arquivo para info do S3
     const ContentType = mime.getType(originalPath);
