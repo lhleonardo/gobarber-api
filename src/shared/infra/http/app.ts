@@ -12,8 +12,11 @@ import '@shared/container';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 
+import rateLimiter from './middlewares/rateLimiter';
+
 const app = express();
 
+app.use(rateLimiter);
 // corpo da requisição sempre convertido para json
 app.use(cors());
 app.use(express.json());
@@ -30,8 +33,6 @@ app.use(
         .status(error.statusCode)
         .json({ status: 'error', message: error.message });
     }
-
-    console.error(error);
 
     return response
       .status(500)
