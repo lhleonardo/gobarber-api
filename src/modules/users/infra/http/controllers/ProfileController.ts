@@ -7,7 +7,7 @@ import UpdateUserService from '@modules/users/services/UpdateUserService';
 
 export default class ProfileController {
   async show(request: Request, response: Response): Promise<Response> {
-    const { userId } = request.body;
+    const userId = request.user.id;
 
     const service = container.resolve(ShowUserService);
 
