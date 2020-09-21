@@ -22,7 +22,7 @@ providersRouter.get(
     [Segments.PARAMS]: {
       providerId: Joi.string().uuid().required(),
     },
-    [Segments.BODY]: {
+    [Segments.QUERY]: {
       year: Joi.number().required(),
       month: Joi.number().required().min(1).max(12),
     },
@@ -36,7 +36,7 @@ providersRouter.get(
     [Segments.PARAMS]: Joi.object({
       providerId: Joi.string().uuid().required(),
     }).required(),
-    [Segments.BODY]: Joi.object({
+    [Segments.QUERY]: Joi.object({
       year: Joi.number().required(),
       month: Joi.number().required().min(1).max(12),
     }).required(),

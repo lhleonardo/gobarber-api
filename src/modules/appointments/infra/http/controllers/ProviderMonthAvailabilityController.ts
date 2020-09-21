@@ -4,13 +4,16 @@ import { container } from 'tsyringe';
 
 class ProviderMonthAvailabilityController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { year, month } = request.body;
-
     const { providerId } = request.params;
+    const { year, month } = request.query;
 
     const service = container.resolve(ListProviderMonthAvailabilityService);
 
-    const availability = await service.execute({ providerId, year, month });
+    const availability = await service.execute({
+      providerId,
+      month: Number(month),
+      year: Number(year),
+    });
 
     return response.json(availability);
   }

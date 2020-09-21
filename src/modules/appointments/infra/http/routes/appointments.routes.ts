@@ -27,7 +27,7 @@ router.post(
 router.get(
   '/me',
   celebrate({
-    [Segments.BODY]: Joi.object({
+    [Segments.QUERY]: Joi.object({
       year: Joi.number().integer().required(),
       month: Joi.number().integer().min(1).max(12),
       day: Joi.number().integer().min(1).max(31),
