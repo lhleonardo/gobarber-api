@@ -62,6 +62,7 @@ export default class AppointmentRepository implements IAppointmentRepository {
             `to_char(${fieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ),
       },
+      relations: ['user'],
     });
     return appointments;
   }
@@ -75,6 +76,7 @@ export default class AppointmentRepository implements IAppointmentRepository {
         date,
         providerId,
       },
+      relations: ['user'],
     });
 
     return findAppointment;

@@ -29,8 +29,8 @@ router.get(
   celebrate({
     [Segments.QUERY]: Joi.object({
       year: Joi.number().integer().required(),
-      month: Joi.number().integer().min(1).max(12),
-      day: Joi.number().integer().min(1).max(31),
+      month: Joi.number().integer().min(1).max(12).required(),
+      day: Joi.number().integer().min(1).max(31).required(),
     }).required(),
   }),
   providerAppointmentsController.index,

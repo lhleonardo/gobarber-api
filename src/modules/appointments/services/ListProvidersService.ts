@@ -2,6 +2,7 @@ import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { classToClass } from 'class-transformer';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()
@@ -20,11 +21,12 @@ class ListProviderServices {
     let providers = await this.cacheProvider.recovery<User[]>(
       `list-providers:${excludeUserId}`,
     );
-
     if (!providers) {
-      providers = await this.userRepository.findAllProviders({
-        excludeUserId,
-      });
+      providers = classToClass(
+        await this.userRepository.findAllProviders({
+          excludeUserId,
+        }),
+      );
 
       await this.cacheProvider.save(
         `list-providers:${excludeUserId}`,
