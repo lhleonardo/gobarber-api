@@ -1,4 +1,4 @@
-import { getDate, getDaysInMonth } from 'date-fns';
+import { getDate, getDaysInMonth, isBefore, endOfDay } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
 
@@ -30,6 +30,8 @@ export default class ListProviderMonthAvailabilityService {
       month,
     });
 
+    const today = Date.now();
+
     const numberOfDays = getDaysInMonth(new Date(year, month - 1));
 
     const days = Array.from({ length: numberOfDays }, (_, index) => {
@@ -39,9 +41,14 @@ export default class ListProviderMonthAvailabilityService {
         appointment => getDate(appointment.date) === day,
       );
 
+      const isValidDay = isBefore(
+        today,
+        endOfDay(new Date(year, month - 1, day)),
+      );
+
       return {
         day,
-        available: appointmentsInDay.length < 10,
+        available: isValidDay && appointmentsInDay.length < 10,
       };
     });
 
