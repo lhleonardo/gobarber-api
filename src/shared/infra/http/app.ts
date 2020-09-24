@@ -16,12 +16,12 @@ import rateLimiter from './middlewares/rateLimiter';
 
 const app = express();
 
-app.use(rateLimiter);
 // corpo da requisição sempre convertido para json
 app.use(cors());
 app.use(express.json());
 // rota estática para acessar arquivos que foram enviados
 app.use('/files', express.static(uploadConfig.uploadFolder));
+app.use(rateLimiter);
 app.use(routes);
 
 app.use(errors());

@@ -3,7 +3,7 @@ import { ptBR } from 'date-fns/locale';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import AppError from '@shared/errors/AppError';
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
-import { injectable, inject, container } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
@@ -45,6 +45,7 @@ export default class CreateAppointmentService {
 
     const findAppointmentInSameDate = await this.appointmentRepository.findByDate(
       parsedDate,
+      providerId,
     );
     if (findAppointmentInSameDate) {
       throw new AppError('Esse horário já foi agendado');
