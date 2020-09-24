@@ -62,6 +62,9 @@ export default class AppointmentRepository implements IAppointmentRepository {
             `to_char(${fieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ),
       },
+      order: {
+        date: 'ASC',
+      },
       relations: ['user'],
     });
     return appointments;
