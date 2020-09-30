@@ -37,6 +37,7 @@ providersRouter.get(
       providerId: Joi.string().uuid().required(),
     }).required(),
     [Segments.QUERY]: Joi.object({
+      day: Joi.number().required().min(1).max(31),
       year: Joi.number().required(),
       month: Joi.number().required().min(1).max(12),
     }).required(),

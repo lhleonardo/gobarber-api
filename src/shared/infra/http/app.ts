@@ -3,7 +3,6 @@ import '@shared/infra/typeorm';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import routes from './routes';
 
 import { errors } from 'celebrate';
 
@@ -13,6 +12,7 @@ import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 
 import rateLimiter from './middlewares/rateLimiter';
+import routes from './routes';
 
 const app = express();
 
