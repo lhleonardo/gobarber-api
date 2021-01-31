@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "predev:server": "docker start mongodb postgres redis",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only src/shared/infra/http/server.ts",
     "test": "jest",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
